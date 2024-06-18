@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { usePrivy } from '@privy-io/react-auth';
+import { getAccessToken, usePrivy } from '@privy-io/react-auth';
 import uclogo from './uclogo.png';
 
 function HomePage() {
-    const { login } = usePrivy();
+    const { login, getAccessToken } = usePrivy();
     const navigate = useNavigate();
     const [loginError, setLoginError] = useState('');
     const {authenticated, ready} = usePrivy();
 
     const handleLogin = async () => {
         try {
-            await login(); // Assuming login does not return a response
+            await login(); 
+            const accessToken = await getAccessToken({expiresIn: '1d'});
             if (ready && authenticated){
-            navigate("/Hours");} // Navigate to the desired path after successful login
+            navigate("/Hours");} 
         } catch (error) {
             setLoginError('An error occurred during login. Please try again.');
         }

@@ -1,5 +1,5 @@
 import { usePrivy } from '@privy-io/react-auth';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Entry {
   hours: string;
@@ -12,6 +12,19 @@ function Hours() {
   const [hours, setHours] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false); // State for confirmation popup
 
+  useEffect(() => {
+    // Load saved entries from localStorage on component mount
+    const savedEntries = localStorage.getItem(`entries_${user.id}`);
+    if (savedEntries) {
+      setEntries(JSON.parse(savedEntries));
+    }
+  }, [user.id]); // Reload entries when user.id changes
+
+  const saveEntriesToLocalStorage = (updatedEntries: Entry[]) => {
+    // Save entries to localStorage
+    localStorage.setItem(`entries_${user.id}`, JSON.stringify(updatedEntries));
+  };
+
   const handleAddEntry = () => {
     if (hours) {
       setShowConfirmation(true);
@@ -22,10 +35,13 @@ function Hours() {
     const currentDate = new Date().toLocaleDateString();
     const currentTime = new Date().toLocaleTimeString();
     const dateTime = `${currentDate} ${currentTime}`;
-    
-    setEntries([...entries, { hours, date: dateTime }]);
+
+    const updatedEntries = [...entries, { hours, date: dateTime }];
+    setEntries(updatedEntries);
     setHours('');
     setShowConfirmation(false);
+
+    saveEntriesToLocalStorage(updatedEntries); // Save updated entries
   };
 
   const cancelAddEntry = () => {
@@ -39,6 +55,8 @@ function Hours() {
     const updatedEntries = [...entries];
     updatedEntries.splice(index, 1);
     setEntries(updatedEntries);
+
+    saveEntriesToLocalStorage(updatedEntries); // Save updated entries
   };
 
   const containerStyle = {
@@ -50,7 +68,7 @@ function Hours() {
   const inputStyle = {
     borderRadius: '8px',
     border: '3px solid #ddd',
-    backgroundColor: '#f0f0f0', 
+    backgroundColor: '#f0f0f0',
     padding: '10px',
     marginRight: '10px',
     fontSize: '1em',
@@ -58,7 +76,7 @@ function Hours() {
     height: '50px',
     boxSizing: 'border-box',
     color: 'black',
-    textAlign: 'center', 
+    textAlign: 'center',
   };
 
   const buttonStyle = {

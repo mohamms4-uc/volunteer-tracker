@@ -6,6 +6,8 @@ import './index.css'
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './HomePage.js';
 import Hours from './Hours.js';
+import Header from './assets/Components/RedHeader.js';
+
 
 
 function App() {
@@ -20,7 +22,7 @@ function App() {
           <Routes>
             <Route path='/' element={<HomePage />}/>
             <Route path='/hours' element={<Hours/>}/>
-
+            <Route path="/home" element={<Header />} />
           </Routes>
           {/* <div className="button">
           <button onClick={login}>

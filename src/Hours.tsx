@@ -14,15 +14,19 @@ function Hours() {
 
   useEffect(() => {
     // Load saved entries from localStorage on component mount
-    const savedEntries = localStorage.getItem(`entries_${user.id}`);
-    if (savedEntries) {
-      setEntries(JSON.parse(savedEntries));
+    if (user && user.id) {
+      const savedEntries = localStorage.getItem(`entries_${user.id}`);
+      if (savedEntries) {
+        setEntries(JSON.parse(savedEntries));
+      }
     }
-  }, [user.id]); // Reload entries when user.id changes
+  }, [user]); // Reload entries when user changes
 
   const saveEntriesToLocalStorage = (updatedEntries: Entry[]) => {
     // Save entries to localStorage
-    localStorage.setItem(`entries_${user.id}`, JSON.stringify(updatedEntries));
+    if (user && user.id) {
+      localStorage.setItem(`entries_${user.id}`, JSON.stringify(updatedEntries));
+    }
   };
 
   const handleAddEntry = () => {
@@ -59,13 +63,13 @@ function Hours() {
     saveEntriesToLocalStorage(updatedEntries); // Save updated entries
   };
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '27px',
   };
 
-  const inputStyle = {
+  const inputStyle: React.CSSProperties = {
     borderRadius: '8px',
     border: '3px solid #ddd',
     backgroundColor: '#f0f0f0',
@@ -79,7 +83,7 @@ function Hours() {
     textAlign: 'center',
   };
 
-  const buttonStyle = {
+  const buttonStyle: React.CSSProperties = {
     borderRadius: '8px',
     border: 'none',
     backgroundColor: 'red',
@@ -92,7 +96,7 @@ function Hours() {
     transition: 'background-color 0.3s',
   };
 
-  const thStyle = {
+  const thStyle: React.CSSProperties = {
     ...cellStyle,
     width: '50px',
     backgroundColor: 'red',
@@ -100,7 +104,7 @@ function Hours() {
     textAlign: 'center',
   };
 
-  const deleteButtonStyle = {
+  const deleteButtonStyle: React.CSSProperties = {
     backgroundColor: 'white',
     color: 'red',
     width: '30px',
@@ -113,7 +117,7 @@ function Hours() {
     cursor: 'pointer',
   };
 
-  const alertStyle = {
+  const alertStyle: React.CSSProperties = {
     position: 'fixed',
     top: '50%',
     left: '50%',
@@ -128,7 +132,7 @@ function Hours() {
     border: '3px solid black',
   };
 
-  const yesButtonStyle = {
+  const yesButtonStyle: React.CSSProperties = {
     backgroundColor: 'white',
     color: 'black',
     padding: '10px 20px',
@@ -141,7 +145,7 @@ function Hours() {
     marginRight: '10px',
   };
 
-  const noButtonStyle = {
+  const noButtonStyle: React.CSSProperties = {
     backgroundColor: 'white',
     color: 'black',
     padding: '10px 20px',
@@ -203,7 +207,7 @@ function Hours() {
   );
 }
 
-const cellStyle = {
+const cellStyle: React.CSSProperties = {
   border: '1px solid #ddd',
   padding: '8px',
   textAlign: 'center',

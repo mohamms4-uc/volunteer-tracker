@@ -5,7 +5,7 @@ import './index.css'
 // import uclogo from './uclogo.png';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './HomePage.js';
-import Hours from './Hours.js';
+import Hours from './Hours.jsx';
 
 
 function App() {

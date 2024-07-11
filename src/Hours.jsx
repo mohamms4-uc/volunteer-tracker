@@ -1,33 +1,18 @@
 import { usePrivy } from '@privy-io/react-auth';
 import React, { useState, useEffect } from 'react';
 
-interface Entry {
-  hours: string;
-  date: string;
-}
-
 function Hours() {
   const { user } = usePrivy();
-  const [entries, setEntries] = useState<Entry[]>([]);
+  const [entries, setEntries] = useState([]);
   const [hours, setHours] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false); // State for confirmation popup
 
+  // Fetch data from the API and set it to entries state
   useEffect(() => {
-    // Load saved entries from localStorage on component mount
-    if (user && user.id) {
-      const savedEntries = localStorage.getItem(`entries_${user.id}`);
-      if (savedEntries) {
-        setEntries(JSON.parse(savedEntries));
-      }
-    }
-  }, [user]); // Reload entries when user changes
-
-  const saveEntriesToLocalStorage = (updatedEntries: Entry[]) => {
-    // Save entries to localStorage
-    if (user && user.id) {
-      localStorage.setItem(`entries_${user.id}`, JSON.stringify(updatedEntries));
-    }
-  };
+    fetch('/api').then(
+      response => response.json()
+    ).then(data => setEntries(data));
+  }, []);
 
   const handleAddEntry = () => {
     if (hours) {
@@ -45,14 +30,17 @@ function Hours() {
     setHours('');
     setShowConfirmation(false);
 
-    saveEntriesToLocalStorage(updatedEntries); // Save updated entries
+    // Save updated entries to localStorage
+    if (user && user.id) {
+      localStorage.setItem(`entries_${user.id}`, JSON.stringify(updatedEntries));
+    }
   };
 
   const cancelAddEntry = () => {
     setShowConfirmation(false);
   };
 
-  const handleDeleteEntry = (index: number, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleDeleteEntry = (index, event) => {
     // Stop event propagation to prevent triggering the parent row click event
     event.stopPropagation();
 
@@ -60,16 +48,19 @@ function Hours() {
     updatedEntries.splice(index, 1);
     setEntries(updatedEntries);
 
-    saveEntriesToLocalStorage(updatedEntries); // Save updated entries
+    // Save updated entries to localStorage
+    if (user && user.id) {
+      localStorage.setItem(`entries_${user.id}`, JSON.stringify(updatedEntries));
+    }
   };
 
-  const containerStyle: React.CSSProperties = {
+  const containerStyle = {
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: '27px',
   };
 
-  const inputStyle: React.CSSProperties = {
+  const inputStyle = {
     borderRadius: '8px',
     border: '3px solid #ddd',
     backgroundColor: '#f0f0f0',
@@ -83,7 +74,7 @@ function Hours() {
     textAlign: 'center',
   };
 
-  const buttonStyle: React.CSSProperties = {
+  const buttonStyle = {
     borderRadius: '8px',
     border: 'none',
     backgroundColor: 'red',
@@ -96,7 +87,7 @@ function Hours() {
     transition: 'background-color 0.3s',
   };
 
-  const thStyle: React.CSSProperties = {
+  const thStyle = {
     ...cellStyle,
     width: '50px',
     backgroundColor: 'red',
@@ -104,7 +95,7 @@ function Hours() {
     textAlign: 'center',
   };
 
-  const deleteButtonStyle: React.CSSProperties = {
+  const deleteButtonStyle = {
     backgroundColor: 'white',
     color: 'red',
     width: '30px',
@@ -117,7 +108,7 @@ function Hours() {
     cursor: 'pointer',
   };
 
-  const alertStyle: React.CSSProperties = {
+  const alertStyle = {
     position: 'fixed',
     top: '50%',
     left: '50%',
@@ -132,7 +123,7 @@ function Hours() {
     border: '3px solid black',
   };
 
-  const yesButtonStyle: React.CSSProperties = {
+  const yesButtonStyle = {
     backgroundColor: 'white',
     color: 'black',
     padding: '10px 20px',
@@ -145,7 +136,7 @@ function Hours() {
     marginRight: '10px',
   };
 
-  const noButtonStyle: React.CSSProperties = {
+  const noButtonStyle = {
     backgroundColor: 'white',
     color: 'black',
     padding: '10px 20px',
@@ -207,7 +198,7 @@ function Hours() {
   );
 }
 
-const cellStyle: React.CSSProperties = {
+const cellStyle = {
   border: '1px solid #ddd',
   padding: '8px',
   textAlign: 'center',

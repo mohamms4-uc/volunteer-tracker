@@ -28,7 +28,7 @@ class Volunteer(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     phone_number = db.Column(db.String(15))
-    hours_volunteered = db.Column(db.Integer)
+    hours_volunteered = db.Column(db.Float(2))
     wallet_address = db.Column(db.String(255))
 
 class Organization(db.Model):
@@ -93,6 +93,7 @@ def create_volunteer():
                               last_name=data['last_name'],
                               email=data['email'],
                               phone_number=data.get('phone_number'),
+                              hours_volunteered=data.get('hours_volunteered'),
                               wallet_address=data.get('wallet_address'))
     db.session.add(new_volunteer)
     db.session.commit()
@@ -110,6 +111,7 @@ def get_volunteers():
             'last_name': volunteer.last_name,
             'email': volunteer.email,
             'phone_number': volunteer.phone_number,
+            'hourse_volunteered': volunteer.hours_volunteered,
             'wallet_address': volunteer.wallet_address
         })
     return jsonify({'volunteers': result})

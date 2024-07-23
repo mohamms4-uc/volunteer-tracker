@@ -23,7 +23,7 @@ const decodeToken = (token: string): PrivyTokenPayload | null => {
   }
 };
 
-const HomePage: React.FC = () => {
+const DesktopLogin: React.FC = () => {
   const { login, getAccessToken, authenticated, ready } = usePrivy();
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -38,7 +38,7 @@ const HomePage: React.FC = () => {
           console.log("Access Token:", accessToken);
           localStorage.setItem('accessToken', accessToken);
           setIsAuthenticated(true);
-          navigate("/Hours");
+          navigate("/dashboard");
         } else {
           console.error("Failed to retrieve access token.");
           setLoginError('Failed to retrieve access token.');
@@ -72,7 +72,7 @@ const HomePage: React.FC = () => {
               if (newAccessToken) {
                 localStorage.setItem('accessToken', newAccessToken);
                 setIsAuthenticated(true);
-                navigate("/"); // Navigate back to login screen on token refresh
+                navigate("/dashboard"); // Navigate back to login screen on token refresh
               } else {
                 setIsAuthenticated(false);
                 localStorage.removeItem('accessToken');
@@ -118,4 +118,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default DesktopLogin;

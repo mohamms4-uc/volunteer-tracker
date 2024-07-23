@@ -2,10 +2,12 @@
 import './App.css';
 import './index.css'
 // import { usePrivy } from '@privy-io/react-auth';
-// import uclogo from './uclogo.png';
 import { Route, Routes } from 'react-router-dom';
-import HomePage from './HomePage.js';
+import HomePage from './HomePage.tsx';
 import Hours from './Hours.jsx';
+import Header from './Components/RedHeader.tsx';
+import Sidebar from './Components/Sidebar.tsx';
+import DesktopLogin from './DesktopLogin.tsx';
 
 
 function App() {
@@ -16,10 +18,13 @@ function App() {
       <div>
       {/* <h1 style={{ color: 'red' }}>Welcome to the UC Volunteer Tracker</h1>
       <img src={uclogo} style={{ width: '150px', height: '150px' }} /> */}
-        <div className="card">
+        <div >
           <Routes>
-            <Route path='/' element={<HomePage />}/>
+            <Route path='/mobilelogin' element={<HomePage />}/>
             <Route path='/hours' element={<Hours/>}/>
+            <Route path="/dashboard" element={<Header />} />
+            <Route path="/sideBar" element={<Sidebar />} />
+            <Route path="/login" element={<DesktopLogin />} />
 
           </Routes>
           {/* <div className="button">

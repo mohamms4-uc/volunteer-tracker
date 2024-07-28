@@ -1,15 +1,17 @@
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
 
-SUPABASE_URL: str = os.environ.get("https://jpxteplnvmmkxnyhuusx.supabase.co")
-SUPABASE_KEY: str = os.environ.get("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpweHRlcGxudm1ta3hueWh1dXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjA3MjgxMDUsImV4cCI6MjAzNjMwNDEwNX0.89gt0Ra3hzx8DHLpUeZs6OVSIf0_Pro6pOW2_4LACLE")
+load_dotenv()
+
+SUPABASE_PASSWORD: str = os.environ.get("SUPABASE_PASSWORD")
 
 '''
 Application
 '''
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{SUPABASE_KEY}:{SUPABASE_URL}/VolunteerTracker'
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres.jpxteplnvmmkxnyhuusx:{SUPABASE_PASSWORD}@aws-0-us-east-1.pooler.supabase.com:6543/postgres"
 db = SQLAlchemy(app)
 
 '''
@@ -199,6 +201,9 @@ def get_volunteer_feedback():
         })
     return jsonify({'volunteer_feedbacks': result})
 
+
+with app.app_context():
+    db.create_all()
 
 if __name__ == '__main__':
     app.run(debug=True)

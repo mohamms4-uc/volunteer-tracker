@@ -20,7 +20,7 @@ const HomePage: React.FC = () => {
           localStorage.setItem('accessToken', accessToken);
           setIsAuthenticated(true);
 
-          // Redirect to /Hours after setting the access token
+          // take out nav hours to stop double login
           navigate("/Hours");
         } else {
           console.error("Failed to retrieve access token.");

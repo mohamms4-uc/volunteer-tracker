@@ -1,6 +1,6 @@
 import React from 'react';
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const sidebarStyle: React.CSSProperties = {
   backgroundColor: 'white',

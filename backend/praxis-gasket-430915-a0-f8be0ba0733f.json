@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "praxis-gasket-430915-a0",
+  "private_key_id": "f8be0ba0733f7e3212a8347227245beecd16902d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCxBpqpBzNYA0Wz\n7VUCgdXtPH6as8kbvIu0IapyoDoHK4EkqKi1VQkgwn67YIF5B/ig2x7iolHGsQ5K\ni8nPBgIF3ezdb1m95p6nb79o+dWmI7Uez1ckiyMzpbuxF3es4utumt5Hu+07nm7v\nqsHEjPbbaEH2xrtoKGysFEw0sZHVaFNDaaBwmdWpDp2w0xri9dbfpIdrw8Nu6WJe\nKWYu/B2+8up4lssMWNdWLGgB1pjdyQ85j7rA8MdNx8bVuOVdq6MGo3K/S+pssI2F\nq4GcMf64CmNPZ5T8haE6GBQqX/g2NdTqUs5e2O305p6wL6MrWugXmKF+qDi4xkA9\n+aw+W6hvAgMBAAECggEAEot4EUP9V3eESkyPDsOuNvuS4b76zuqKEhVCx15Mpeqj\nTUVT4yck3Scy4otCFP1GSQebbS+G9JMgxaNuQT9GX/n3Md1T3+Z0cWLuAN/HR2/P\nLgqXfO8MgYEXr/4e3eApvL0Bky83M3st8PKI+P+xbpu16VW5VTiC5eX8c7q0ZdAq\nfSaeJDGfr3sB2/aE6knjpUiFp5qT0iSzOttDi4Nwkk9Hr+Vk3T7lUaTPmy+I5rCp\nPxItN5nyRxK5gui7FWTC3N8TJFT7zcqXKvW1QcTwDJnuSiViJZsJbVvs07G85iop\nUMXbPwrGOCFit62cqxYyTlnS1axwwb9PcamhxbMUrQKBgQD0dbT3mSXZAug7xLah\nuufuhOjyZM6koSh12KiwMwzFyk1PLhDfI3WYYSAyKN32/mccjceNZbVr2cfrDngC\n8tA7UM/w4x0QE1azd5UlRhe21LPIHyaBiFG5DqfG6Rq2k/YwS4JlVS521fLaGbuY\nHseAVoDwjpnTDfiuDdKQ+bZb5QKBgQC5YfVX1zguf8E+vgcmLe843wYfePAboEL4\nW7jQbfY9GVzDzD6i0fu0UcJaNA9uPTcbRNU8X37HO6hI5XdcwRwXDTZzPyi2yObR\n9jDAn3pcHYIWg+v5XxdJiED1Nrv6P+/UPUzDw1JOl6+96SoITRH7p6hJY6z8MP/n\nDmxL72R1wwKBgQDT1hg+ouioOBu0h09XsNaA243dVru276xXCquLHIHJ9/esUJfw\nNRMXO7shnEZUXbpOhRHSlrtyvSK/rycSLwWBERNQhA5QOuHb3RlSVn4AQiuUlGHS\nx6VBvtBmzuMGKguhaB2T4A/GjLnIg5oLRUjODqfnTTtBKA9CDNpWJP4AfQKBgFGe\nVVyFPxEJ4lTzaUZf9vD9ED8PCfe/yXx7NZVetIkV/4edBv68oKs1S/JW9Ww9u2Ng\nHNnl2XVySJc/oBvQUcO8Z3q6FfzT2vwZ/kDwdfjUbQ/oqR4zxZb0TFUp8f0t5TN2\ngbO27Sf5FMDyRTU+aWp42Fjnb6PhFuntqbSNA5ftAoGAYSCNS7LfY0DcHiHM/MEX\nkAqVCzZrCozzJm5YSnbmWpOaAxMtEzTPT3JUJELH/p29MNexWzh+8BmenhX82Bya\n9Wbmo4b41W3XtlqiLALjxumG7Xhm740vY62GMawHzBQvBtFsg2TbZq7FeS+ECINU\n7ZKqpkqRN8Hj8bM2eJp/lgA=\n-----END PRIVATE KEY-----\n",
+  "client_email": "privvywithuc@praxis-gasket-430915-a0.iam.gserviceaccount.com",
+  "client_id": "115479562687312200931",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/privvywithuc%40praxis-gasket-430915-a0.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

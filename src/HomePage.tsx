@@ -1,30 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePrivy } from '@privy-io/react-auth';
 import uclogo from './uclogo.png';
-
-type PrivyTokenPayload = {
-  sid: string;
-  sub: string;
-  iss: string;
-  aud: string;
-  iat: number;
-  exp: number;
-};
-
-const decodeToken = (token: string): PrivyTokenPayload | null => {
-  try {
-    const payload = token.split('.')[1];
-    const decodedPayload = atob(payload);
-    return JSON.parse(decodedPayload) as PrivyTokenPayload;
-  } catch (error) {
-    console.error('Failed to decode token', error);
-    return null;
-  }
-};
+import axios from 'axios';
 
 const HomePage: React.FC = () => {
-  const { login, getAccessToken, authenticated, ready } = usePrivy();
+  const { login, getAccessToken, authenticated, ready, user } = usePrivy();
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -38,6 +19,8 @@ const HomePage: React.FC = () => {
           console.log("Access Token:", accessToken);
           localStorage.setItem('accessToken', accessToken);
           setIsAuthenticated(true);
+
+          // Redirect to /Hours after setting the access token
           navigate("/Hours");
         } else {
           console.error("Failed to retrieve access token.");
@@ -52,54 +35,6 @@ const HomePage: React.FC = () => {
       setLoginError('An error occurred during login. Please try again.');
     }
   };
-
-  useEffect(() => {
-    const checkToken = async () => {
-      const accessToken = localStorage.getItem('accessToken');
-      console.log("Current Access Token:", accessToken);
-
-      if (accessToken) {
-        const decoded = decodeToken(accessToken);
-        if (decoded) {
-          const now = Date.now() / 1000;
-
-          if (decoded.exp && decoded.exp > now) {
-            setIsAuthenticated(true);
-          } else {
-            console.log("Token expired or invalid, attempting to refresh");
-            try {
-              const newAccessToken = await getAccessToken();
-              if (newAccessToken) {
-                localStorage.setItem('accessToken', newAccessToken);
-                setIsAuthenticated(true);
-                navigate("/"); // Navigate back to login screen on token refresh
-              } else {
-                setIsAuthenticated(false);
-                localStorage.removeItem('accessToken');
-                setLoginError('Session expired. Please log in again.'); // Notify user to log in again
-              }
-            } catch (error) {
-              console.error("Error refreshing token:", error);
-              setIsAuthenticated(false);
-              localStorage.removeItem('accessToken');
-              setLoginError('Session expired. Please log in again.'); // Notify user to log in again
-            }
-          }
-        } else {
-          console.error("Failed to decode token.");
-          setIsAuthenticated(false);
-          localStorage.removeItem('accessToken');
-          setLoginError('Session expired. Please log in again.'); // Notify user to log in again
-        }
-      }
-    };
-
-    checkToken(); // Initial token check on component mount
-
-    const refreshInterval = setInterval(checkToken, 30000); // Refresh token every 30 seconds
-
-    return () => clearInterval(refreshInterval); // Clean up interval on component unmount
-  }, []);
 
   return (
     <div>

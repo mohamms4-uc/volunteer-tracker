@@ -1,13 +1,422 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Volunteer Tracker</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hour Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #D72032;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .header-content img {
+            max-width: 100%;
+            height: 18vh;
+        }
+        .notification-bar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notification-left {
+            display: flex;
+            align-items: center;
+        }
+        .notification-icon {
+            background-color: #ffcc00;
+            color: #333;
+            border-radius: 50%;
+            padding: 5px 10px;
+            margin-right: 10px;
+        }
+        button {
+            background-color: #D72032;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .status-unfinished {
+            color: red;
+        }
+        .status-pending {
+            color: orange;
+        }
+        .status-accepted {
+            color: green;
+        }
+        .user-menu {
+            background-color: #666;
+            color: #fff;
+            border-radius: 50%;
+            padding: 10px;
+        }
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f1f1f1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .sidebar-item {
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .sidebar-item:hover {
+            background-color: #ddd;
+        }
+        .sidebar-item.active {
+            background-color: #ddd;
+        }
+        .icon {
+            margin-right: 10px;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        nav {
+            background-color: #f1f1f1;
+            padding: 10px 20px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            padding: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f1f1f1;
+        }
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+            z-index: 1001;
+        }
+        .popup h2 {
+            margin-top: 0;
+        }
+        .popup label {
+            display: block;
+            margin-top: 10px;
+        }
+        .popup input[type="text"],
+        .popup input[type="number"],
+        .popup textarea {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+        }
+        .popup-buttons {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .popup-buttons button {
+            padding: 10px 20px;
+            margin-left: 10px;
+        }
+        #submitButton {
+            background-color: #D72032;
+            color: white;
+            border: none;
+        }
+        #cancelButton {
+            background-color: #ccc;
+            color: black;
+            border: none;
+        }
+        .admin-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .admin-buttons button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="https://s3.amazonaws.com/files.galaxydigital.com/4722/images/banner-small.jpg?updated=1716478649" alt="Community Engagement">
+        </div>
+    </header>
+    <div class="notification-bar">
+        <div class="notification-left">
+            <span id="notificationCount" class="notification-icon"></span>
+            <span>Notifications</span>
+        </div>
+        <div id="userMenu" class="user-menu"></div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-item active">
+                <span class="icon">🏠</span>
+                MY ORGANIZATION
+            </div>
+            <div class="sidebar-item" id="hourSubmissions">
+                <span class="icon">✔️</span>
+                HOUR SUBMISSIONS
+            </div>
+            <div class="sidebar-item" id="myEvents">
+                <span class="icon">✔️</span>
+                MY EVENTS
+            </div>
+            <div class="sidebar-item" id="search">
+                <span class="icon">🔍</span>
+                SEARCH
+            </div>
+            <div class="sidebar-item" onclick="switchUser()">
+                <span class="icon">👥</span>
+                SWITCH USER (ADMIN)
+            </div>
+        </div>
+        <div class="main-content">
+            <main>
+                <section id="my-hours">
+                    <h2>My Hours</h2>
+                    <button id="addHoursButton">Add Hours +</button>
+                    <table id="hoursTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Details</th>
+                                <th>Hours</th>
+                                <th>User Group</th>
+                                <th>Type</th>
+                                <th>Miles Traveled</th>
+                                <th>Tokenized</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nov 3, 2023</td>
+                                <td>1819 Innovation Hub Individual</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0</td>
+                                <td>Yes</td>
+                                <td class="status-unfinished">Unfinished</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nov 3, 2023</td>
+                                <td>1819 Innovation Hub Individual</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0</td>
+                                <td>Yes</td>
+                                <td class="status-unfinished">Unfinished</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nov 3, 2023</td>
+                                <td>1819 Innovation Hub Individual</td>
+                                <td>2.00</td>
+                                <td>—</td>
+                                <td>0</td>
+                                <td>No</td>
+                                <td class="status-pending">Pending</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nov 3, 2023</td>
+                                <td>1819 Innovation Hub Individual</td>
+                                <td>22.00</td>
+                                <td>—</td>
+                                <td>0</td>
+                                <td>No</td>
+                                <td class="status-pending">Pending</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nov 3, 2023</td>
+                                <td>1819 Innovation Hub Individual</td>
+                                <td>15.00</td>
+                                <td>—</td>
+                                <td>0</td>
+                                <td>Yes</td>
+                                <td class="status-accepted">Accepted</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+    </div>
+    <div id="addHoursPopup" class="popup-overlay">
+        <div class="popup">
+            <h2>1819 Innovation Hub Individual</h2>
+            <p>Date Volunteered: <span id="dateVolunteered"></span></p>
+            <label for="hoursVolunteered">Hours Volunteered:</label>
+            <input type="number" id="hoursVolunteered" step="0.5" value="3.5">
+            <label for="description">Description (50 - 100 words)</label>
+            <textarea id="description" rows="4" placeholder="Write here"></textarea>
+            <label for="impact">How were you impacted by this volunteer experience?</label>
+            <textarea id="impact" rows="4" placeholder="Write here"></textarea>
+            <div class="popup-buttons">
+                <button id="submitButton">Submit</button>
+                <button id="cancelButton">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateNotificationCount(count) {
+            const notificationCount = document.getElementById('notificationCount');
+            notificationCount.textContent = count;
+            notificationCount.style.display = count > 0 ? 'inline-block' : 'none';
+        }
+
+        function getInitials(name) {
+            return name
+                .split(' ')
+                .map(word => word[0])
+                .join('')
+                .toUpperCase()
+                .slice(0, 2);
+        }
+
+        function updateUserProfile(imageUrl, name) {
+            const userMenu = document.getElementById('userMenu');
+            if (imageUrl) {
+                userMenu.innerHTML = `<img src="${imageUrl}" alt="User profile">`;
+            } else if (name) {
+                const initials = getInitials(name);
+                userMenu.textContent = initials;
+            }
+        }
+
+        function showAddHoursPopup() {
+            document.getElementById('addHoursPopup').style.display = 'block';
+            document.getElementById('dateVolunteered').textContent = new Date().toLocaleDateString();
+        }
+
+        function hideAddHoursPopup() {
+            document.getElementById('addHoursPopup').style.display = 'none';
+        }
+
+        function addNewHourRow(date, details, hours, userGroup, type, miles, tokenized, status) {
+            const table = document.getElementById('hoursTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td>${date}</td>
+                <td>${details}</td>
+                <td>${hours}</td>
+                <td>${userGroup}</td>
+                <td>${type}</td>
+                <td>${miles}</td>
+                <td>${tokenized}</td>
+                <td class="${status === 'Unfinished' ? 'status-unfinished' : status === 'Pending' ? 'status-pending' : 'status-accepted'}">${status}</td>
+                <td></td>
+            `;
+        }
+
+        document.getElementById('addHoursButton').addEventListener('click', showAddHoursPopup);
+        document.getElementById('cancelButton').addEventListener('click', hideAddHoursPopup);
+        document.getElementById('submitButton').addEventListener('click', function() {
+            const date = new Date().toLocaleDateString();
+            const details = "1819 Innovation Hub Individual";
+            const hours = document.getElementById('hoursVolunteered').value;
+            const userGroup = "—";
+            const type = "0";
+            const miles = "No";
+            const tokenized = "Yes";
+            const status = "Pending";
+
+            addNewHourRow(date, details, hours, userGroup, type, miles, tokenized, status);
+            hideAddHoursPopup();
+        });
+
+        function switchUser() {
+            const sidebar = document.getElementById('sidebar');
+            const hourSubmissions = document.getElementById('hourSubmissions');
+            const myEvents = document.getElementById('myEvents');
+            const search = document.getElementById('search');
+            const addHoursButton = document.getElementById('addHoursButton');
+
+            // Hide items and buttons for admin view
+            hourSubmissions.style.display = 'none';
+            myEvents.style.display = 'none';
+            search.style.display = 'none';
+            addHoursButton.style.display = 'none';
+
+            // Add actions column with buttons for each row in the table
+            const table = document.getElementById('hoursTable').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < table.rows.length; i++) {
+                const row = table.rows[i];
+                const actionsCell = row.insertCell(-1);
+                actionsCell.innerHTML = `
+                    <button onclick="acceptRow(this)">Accept</button>
+                    <button onclick="declineRow(this)">Decline</button>
+                `;
+            }
+        }
+
+        function acceptRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+
+        function declineRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+    </script>
+</body>
 </html>

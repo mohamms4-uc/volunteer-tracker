@@ -2,17 +2,19 @@ import { usePrivy } from '@privy-io/react-auth';
 import React, { useState, useEffect } from 'react';
 
 function Hours() {
-  const { user } = usePrivy();
+  const { user } = usePrivy(); // Destructure user from Privy
   const [entries, setEntries] = useState([]);
   const [hours, setHours] = useState('');
-  const [showConfirmation, setShowConfirmation] = useState(false); // State for confirmation popup
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  // Fetch data from the API and set it to entries state
   useEffect(() => {
-    fetch('/api').then(
-      response => response.json()
-    ).then(data => setEntries(data));
-  }, []);
+    if (user && user.id) {
+      fetch(`/mobilelogin/volunteerlogs/${user.id}`)
+        .then(response => response.json())
+        .then(data => setEntries(data))
+        .catch(error => console.error('Error fetching volunteer logs:', error));
+    }
+  }, [user]);
 
   const handleAddEntry = () => {
     if (hours) {
@@ -25,14 +27,32 @@ function Hours() {
     const currentTime = new Date().toLocaleTimeString();
     const dateTime = `${currentDate} ${currentTime}`;
 
-    const updatedEntries = [...entries, { hours, date: dateTime }];
-    setEntries(updatedEntries);
+    const newEntry = { hours, date: dateTime };
+    setEntries([...entries, newEntry]);
     setHours('');
     setShowConfirmation(false);
 
-    // Save updated entries to localStorage
     if (user && user.id) {
-      localStorage.setItem(`entries_${user.id}`, JSON.stringify(updatedEntries));
+      fetch('http://localhost:5000/mobilelogin/volunteerlogs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          volunteer_id: user.id,
+          hours_volunteered: hours,
+          volunteered_time: dateTime // Ensure date is in the correct format
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Log entry added successfully.') {
+          console.log('Volunteer log entry added successfully.');
+        } else {
+          console.error('Failed to add log entry:', data.message);
+        }
+      })
+      .catch(error => console.error('Error:', error));
     }
   };
 
@@ -41,7 +61,6 @@ function Hours() {
   };
 
   const handleDeleteEntry = (index, event) => {
-    // Stop event propagation to prevent triggering the parent row click event
     event.stopPropagation();
 
     const updatedEntries = [...entries];
@@ -89,10 +108,11 @@ function Hours() {
 
   const thStyle = {
     ...cellStyle,
-    width: '50px',
+    width: '100px',
     backgroundColor: 'red',
     color: 'white',
     textAlign: 'center',
+    marginTop: '10px'
   };
 
   const deleteButtonStyle = {
@@ -132,7 +152,7 @@ function Hours() {
     fontFamily: 'inherit',
     cursor: 'pointer',
     transition: 'background-color 0.3s',
-    border: '3px solid black', // Thick black outline
+    border: '3px solid black',
     marginRight: '10px',
   };
 
@@ -145,12 +165,12 @@ function Hours() {
     fontFamily: 'inherit',
     cursor: 'pointer',
     transition: 'background-color 0.3s',
-    border: '3px solid black', // Thick black outline
+    border: '3px solid black',
   };
 
   return (
     <div>
-      <h1>Volunteer Dashboard</h1>
+      <h1 style={{color:'red'}}>Volunteer Dashboard</h1>
       <h2>Past Volunteer Hours</h2>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>

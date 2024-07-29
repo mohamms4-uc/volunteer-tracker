@@ -4,10 +4,10 @@ import '../uclogo.png';
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <PrivyProvider
-      appId='clx0v8lcw007x291oxp6g6j7g'
+      appId='clyi1e71v0ipenhmnj9ojedxb'
       config={{
         // Replace this with your desired login methods
-        loginMethods: ['email', 'wallet'],
+        loginMethods: ['email', 'wallet', 'google'],
         // Replace this with your desired appearance configuration
         appearance: {
           theme: 'light',

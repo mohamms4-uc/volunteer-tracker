@@ -1,0 +1,142 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  header {
+    background-color: #D72032;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-content {
+    display: flex;
+    align-items: center;
+  }
+  .header-content img {
+    height: 50px;
+    margin-right: 20px;
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  .notification-bar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .notification-left {
+    display: flex;
+    align-items: center;
+  }
+  .notification-icon {
+    background-color: #ffcc00;
+    color: #333;
+    border-radius: 50%;
+    padding: 5px 10px;
+    margin-right: 10px;
+  }
+  button {
+    background-color: #D72032;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  .status-unfinished {
+    color: red;
+  }
+  .status-pending {
+    color: orange;
+  }
+  .status-accepted {
+    color: green;
+  }
+  .user-menu {
+    background-color: #666;
+    color: #fff;
+    border-radius: 50%;
+    padding: 10px;
+  }
+  .content-wrapper {
+    display: flex;
+    flex-grow: 1;
+  }
+  .sidebar {
+    width: 200px;
+    background-color: #f1f1f1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .sidebar-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .sidebar-item:hover {
+    background-color: #ddd;
+  }
+  .sidebar-item.active {
+    background-color: #ddd;
+  }
+  .icon {
+    margin-right: 10px;
+  }
+  .main-content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  nav {
+    background-color: #f1f1f1;
+    padding: 10px 20px;
+  }
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  nav ul li {
+    padding: 10px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #f1f1f1;
+  }
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+   
+  

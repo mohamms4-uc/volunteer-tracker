@@ -14,6 +14,10 @@ function Hours() {
       setEntries(JSON.parse(storedEntries));
     }
 
+// hook up 'create attestation' to the 'enter hours' button
+// fix pushing emails to google sheets
+// Pulling NFC.ID, EVENT.ID, ORGANIZER.ID to make dynamic based on NFC chip scanned
+
     // Send email to the backend after component mounts
     if (user && user.email) {
       const userEmail = user.email.address;
